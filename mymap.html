@@ -1,0 +1,101 @@
+<!DOCTTYPE html>
+<html>
+<head>
+	<title> Testing Around Working Title</title>
+		<p>This text will be covered</p>
+
+	<link rel="stylesheet" href="https://unpkg.com/leaflet@1.5.1/dist/leaflet.css" />
+	<script src="https://unpkg.com/leaflet@1.5.1/dist/leaflet.js"></script>
+	<style>
+		#map{position:absolute; top:0; bottom:0; left:0; right:0;}
+	</style>
+
+</head>
+<body>
+
+
+	<div id = "map"></div>
+	
+
+	<script>
+
+
+		var map = L.map('map').setView([0,0],1);
+
+		
+
+		var streets = L.tileLayer('https://api.maptiler.com/maps/streets/{z}/{x}/{y}.png?key=5Tjta8Ca1nIGI5ba0tp4', {
+			attribution: '<a href="https://www.maptiler.com/copyright/" target="_blank">&copy; MapTiler</a> <a href="https://www.openstreetmap.org/copyright" target="_blank">&copy; OpenStreetMap contributors</a>',
+		})
+
+		var satellite = L.tileLayer('https://api.maptiler.com/maps/hybrid/{z}/{x}/{y}.jpg?key=5Tjta8Ca1nIGI5ba0tp4', {
+			attribution: '<a href="https://www.maptiler.com/copyright/" target="_blank">&copy; MapTiler</a> <a href="https://www.openstreetmap.org/copyright" target="_blank">&copy; OpenStreetMap contributors</a>',
+		})
+
+
+
+		streets.addTo(map);
+		
+		var tillsonburg = L.marker([42.875315,-80.740983]).addTo(map);
+		var waterloo = L.marker([43.506320,-80.508131]).addTo(map);
+
+
+		var circle = L.circle([43.987160,-79.453833], {
+			color: 'red',
+			fillColor: '#f03',
+			fillOpactiy: 0.5,
+			radius: 500
+
+		}).addTo(map)
+
+
+		var polygon = L.polygon([
+			[43.472530,-80.550759],
+			[43.475102,-80.542672],
+			[43.470929,-80.538252],
+			[43.466273,-80.541428],
+			[43.467176,-80.543852],
+			[43.470555,-80.544989]
+			]).addTo(map);
+
+		polygon.bindPopup("<b> University of Waterloo</b><br> MARKER TEST");
+ 		circle.bindPopup("JANA CORPORATION");
+ 		tillsonburg.bindPopup("HomeTown Yeehaw");
+ 		waterloo.bindPopup("Less Yeehaw");
+ 		
+
+
+
+
+
+		//var x = L.marker([0,0]).addTo(map);
+
+		function getLocation() {
+  		if (navigator.geolocation) {
+    	navigator.geolocation.getCurrentPosition(showPosition);
+  		} else { 
+    	x.bindPopup("Geolocation is not supported by this browser.").openPopup();
+  		}
+		}
+
+		function showPosition(position) {
+		
+		var lat = position.coords.latitude;
+		var long = position.coords.longitude;
+		var x = L.marker([lat,long]).addTo(map); // GET CURRENT LOCATION 
+
+		x.bindPopup("SUPPORTED." + lat + " and: " +  long ).openPopup();
+		console.log("hello");
+
+		}
+
+		getLocation();
+
+
+
+
+
+	</script>
+
+</body>
+</html>

@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html>
+<head>
+	
+	<title>Layers Control Tutorial - Leaflet</title>
+
+	<meta charset="utf-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	
+	<link rel="shortcut icon" type="image/x-icon" href="docs/images/favicon.ico" />
+
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.5.1/dist/leaflet.css" integrity="sha512-xwE/Az9zrjBIphAcBb3F6JVqxf46+CDLwfLMHloNu6KEQCAWi6HcDUbeOfBIptF7tcCzusKFjFw2yuvEpDL9wQ==" crossorigin=""/>
+    <script src="https://unpkg.com/leaflet@1.5.1/dist/leaflet.js" integrity="sha512-GffPMF3RvMeYyc1LWMHtK8EbPv0iNZ8/oTtHPx9/cc2ILxQ+u905qIwdpULaqDkyBKgOaB57QTMg7ztg8Jm2Og==" crossorigin=""></script>
+
+
+	<style>
+		html, body {
+			height: 100%;
+			margin: 0;
+		}
+		#map {
+			width: 1000px;
+			height: 750px;
+		}
+	</style>
+
+	
+</head>
+<body>
+
+<div id='map'></div>
+
+<script>
+	var cities = L.layerGroup();
+	L.marker([42.875315,-80.740983]).bindPopup('Tillsonburg').addTo(cities),
+	L.marker([43.506320,-80.508131]).bindPopup('Waterloo').addTo(cities);
+
+	var myPeople = L.layerGroup();
+
+
+	var mbAttr = 'Map data &copy; <a href="https://www.openstreetmap.org/">OpenStreetMap</a> contributors, ' +
+			'<a href="https://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, ' +
+			'Imagery © <a href="https://www.mapbox.com/">Mapbox</a>',
+		mbUrl = 'https://api.maptiler.com/maps/hybrid/{z}/{x}/{y}.jpg?key=5Tjta8Ca1nIGI5ba0tp4',
+		mbUrl2 = 'https://api.maptiler.com/maps/streets/{z}/{x}/{y}.png?key=5Tjta8Ca1nIGI5ba0tp4';
+
+	var satellite   = L.tileLayer(mbUrl, {id: 'mapbox.light', attribution: mbAttr}),
+		streets  = L.tileLayer(mbUrl2, {id: 'mapbox.streets',   attribution: mbAttr});
+
+	var map = L.map('map', {
+		center: [42.90, -80.64],
+		zoom: 8,
+		layers: [satellite, cities, myPeople] //ORDER HERE MATTERS. RIGT MOST IS THE TOP MOST.
+	});
+
+	var baseLayers = {
+		"satellite": satellite,
+		"streets": streets
+	};
+
+	var overlays = {
+		"Cities": cities,
+		"Friends": myPeople
+
+	};
+
+	L.control.layers(baseLayers, overlays).addTo(map);
+
+
+
+		function getLocation() {
+  		if (navigator.geolocation) {
+    	navigator.geolocation.getCurrentPosition(showPosition);
+  		} else { 
+
+  			// make it so  the map moves to a pointer or shape that says geolocation not available.
+    	x.bindPopup("Geolocation is not supported by this browser.").openPopup();
+  		}
+		}
+
+		function showPosition(position) {
+		
+		var lat = position.coords.latitude;
+		var long = position.coords.longitude;
+		var x = L.marker([lat,long]).addTo(myPeople); // GET CURRENT LOCATION 
+
+		x.bindPopup("My Location: " + lat + " and: " +  long ).openPopup();
+		}
+
+		getLocation();
+
+
+
+
+
+
+
+
+
+
+</script>
+
+
+
+</body>
+</html>
