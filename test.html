@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>File Reader</title>
+
+
+  <style>
+table {
+  font-family: arial, sans-serif;
+  border-collapse: collapse;
+  width: 100%;
+}
+
+td, th {
+  border: 1px solid #dddddd;
+  text-align: left;
+  padding: 8px;
+}
+
+tr:nth-child(even) {
+  background-color: #dddddd;
+}
+</style>
+
+</head>
+<body>
+
+
+
+
+
+<input type="file" id="fileinput" />
+<script>
+  function readSingleFile(evt) {
+    var f = evt.target.files[0]; 
+    if (f) {
+      var r = new FileReader();
+      r.onload = function(e) { 
+          var contents = e.target.result;
+
+          document.write("File Has Been Uploaded!<br/ ><br/>")
+
+          document.write("File Name: " + f.name + "<br />" + "File Type: " + f.type + "<br />" + "File Size: " + f.size + "<br /><br />")
+
+
+          //document.write("Contents: <br />:" + contents)
+          var lines = contents.split("\n"), output = [];
+          for (var i=0; i<lines.length; i++){
+            output.push("<tr><td>"  + lines[i].split(",").join("</td><td>") + "</td></tr>");
+          }
+          output = "<table>" + output.join("") + "</table>";
+          document.write(lines);
+          document.write(output);
+
+
+
+
+          document.write("TEST")
+
+
+          document.write(typeof lines);
+          var ender = lines.split("\n");
+          var results = []
+          var headers = ender[0].split(",");
+
+          for (var i=1; i<lines.length;i++){
+            var obj = {};
+            var currentline=ender[i].split(",");
+
+            for (var j=0;j<headers.length;j++){
+              obj[headers[j]] = currentline[j];
+            }
+            result.push(obj);
+
+          }
+          return JSON.stringify(result); //JSON
+
+
+
+
+
+
+
+     }
+      r.readAsText(f);
+      document.write(output);
+    } else { 
+      alert("Failed to load file");
+    }
+  }
+  document.getElementById('fileinput').addEventListener('change', readSingleFile);
+</script>
+
+
+
+
+
+
+</body>
+</html>
